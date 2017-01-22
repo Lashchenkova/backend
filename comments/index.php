@@ -36,11 +36,13 @@ echo nl2br($text);
 <?php
 if(empty($_POST['name']) || empty($_POST['comment']))
 {return false;}
+//$comment = array_map('htmlentities', $_POST);
 //removing all tags
-$_POST['comment'] = strip_tags($_POST['comment']);
+
 //removing empty strings
 $_POST['comment']=preg_replace("/\s+\r\n/", "",$_POST['comment']);
-$comment = $_POST;
+$comment = array_map('htmlentities', $_POST);
+$comment['comment'] = strip_tags($comment['comment'], 'b');
 file_put_contents("comments.txt", implode(": \n", $comment) . "\n" . "<hr>", FILE_APPEND);
-header("Location: /comments");
+header("Location: /backend/comments");
 ?>
